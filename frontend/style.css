@@ -1,0 +1,3113 @@
+/* --- ЗМІННІ КОЛЬОРІВ --- */
+:root {
+    --bg-dark: #09090b;       
+    --bg-card: #18181b;       
+    --text-main: #fafafa;     
+    --text-muted: #a1a1aa;    
+    --accent-cyan: #06b6d4;   
+    --accent-glow: #22d3ee;   
+    --accent-purple: #8b5cf6; 
+}
+
+/* --- БАЗОВІ НАЛАШТУВАННЯ --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .btn-primary, .btn-secondary {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* --- НАВІГАЦІЯ (Glassmorphism) --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(9, 9, 11, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+/* Акцент на частині Craft */
+.logo-text span {
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--accent-cyan);
+    background: rgba(6, 182, 212, 0.1);
+}
+
+/* --- КНОПКИ --- */
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-main);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    border-color: var(--text-main);
+}
+
+.glow-effect {
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- ГОЛОВНИЙ ЕКРАН (HERO) --- */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 20px;
+    background: radial-gradient(circle at top, #18181b 0%, var(--bg-dark) 60%);
+}
+
+.hero-content {
+    max-width: 800px;
+    margin-top: 50px;
+}
+
+
+
+
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* --- СЕКЦІЯ РЕЗУЛЬТАТІВ --- */
+.results-section {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    transition: opacity 0.5s ease;
+}
+
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+
+
+/* СІТКА КАРТОК */
+.build-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* КАРТКА ДЕТАЛІ */
+.component-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s forwards;
+}
+
+.component-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-purple);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+}
+
+.comp-type {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-purple);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.comp-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text-main);
+}
+
+.comp-price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    text-align: right;
+    margin-top: 15px;
+}
+
+/* Загальна сума */
+.build-total {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    padding: 25px;
+    background: rgba(139, 92, 246, 0.05);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 12px;
+    animation: fadeUp 0.5s forwards;
+    animation-delay: 0.8s;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- СМАРТ ФІЛЬТРИ (Випадаючі списки) --- */
+.smart-filters {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    justify-content: center;
+    flex-wrap: wrap; /* Щоб на телефонах виглядало гарно */
+    margin-top: -5px;
+    margin-bottom: 5px;
+}
+
+.modern-select {
+    flex: 1;
+    min-width: 150px;
+    padding: 12px 15px;
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-main);
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    
+    /* Ховаємо стандартну стрілочку і ставимо свою кастомну бірюзову */
+    appearance: none; 
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2306b6d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 18px;
+}
+
+.modern-select:focus, .modern-select:hover {
+    border-color: var(--accent-cyan);
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
+}
+
+.modern-select option {
+    background-color: var(--bg-card); /* Темний фон для випадного меню */
+    color: var(--text-main);
+    padding: 10px;
+}
+
+/* --- СТИЛЬ ДЛЯ ВВОДУ ГРИ/ПРОГРАМИ --- */
+.filter-input {
+    flex: 1;
+    min-width: 150px;
+    padding: 12px 15px;
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-main);
+    font-family: 'Space Grotesk', sans-serif;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.filter-input:focus {
+    border-color: var(--accent-cyan);
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
+}
+
+/* Колір підказки (placeholder) */
+.filter-input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* --- ЦЕНТРУВАННЯ ТА ВВІД БЮДЖЕТУ --- */
+/* --- СТИЛЬ ДЛЯ ВВОДУ БЮДЖЕТУ --- */
+.budget-control {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.budget-input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.modern-input.large-input {
+    width: 100%;
+    padding: 18px 50px 18px 25px;
+    font-size: 22px;
+    background: rgba(255, 255, 255, 0.03); 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-family: 'Space Grotesk', sans-serif;
+    text-align: center;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.modern-input.large-input:focus {
+    border-color: var(--accent-purple);
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.currency-badge {
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: var(--accent-cyan);
+    font-weight: 700;
+}
+
+/* Прибираємо стандартні стрілочки "вгору/вниз" в полі вводу чисел (Chrome/Safari) */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+/* --- ТУМБЛЕР (ПЕРЕМИКАЧ ПЕРИФЕРІЇ) --- */
+.toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255,255,255,0.03);
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255,255,255,0.1);
+    transition: .4s;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px; width: 18px;
+    left: 4px; bottom: 4px;
+    background-color: var(--text-muted);
+    transition: .4s;
+}
+input:checked + .slider { background-color: var(--accent-purple); }
+input:checked + .slider:before {
+    transform: translateX(24px);
+    background-color: #fff;
+}
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }
+
+.toggle-label {
+    font-size: 15px;
+    color: var(--text-main);
+}
+
+/* --- РУЧНА ЗБІРКА (LAYOUT) --- */
+.builder-layout {
+    display: grid;
+    grid-template-columns: 1fr 350px; /* Ліва колонка ширша, права фіксована */
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.slot-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: 0.3s;
+}
+.slot-card:hover {
+    border-color: var(--accent-cyan);
+    background: rgba(6, 182, 212, 0.05);
+}
+
+.slot-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.slot-info { flex: 1; }
+.slot-info h4 { color: var(--text-muted); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+.selected-name { font-size: 18px; font-weight: 600; color: var(--text-main); margin-top: 5px; }
+
+.btn-sm { padding: 8px 15px; font-size: 14px; }
+
+/* ПРАВА ПАНЕЛЬ ПІДСУМКІВ */
+.builder-summary {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 30px;
+    position: sticky;
+    top: 100px; /* Прилипає при скролі */
+    height: fit-content;
+}
+
+/* Анімований заголовок "Загальна приблизна вартість" */
+.builder-summary h3 { 
+    font-size: 22px; 
+    margin-bottom: 20px; 
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    /* Створюємо градієнт (Бірюзовий -> Білий -> Фіолетовий) */
+    background: linear-gradient(90deg, var(--accent-cyan), #ffffff, var(--accent-purple), var(--accent-cyan));
+    background-size: 200% auto;
+    
+    /* Застосовуємо градієнт саме до тексту */
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Плавна анімація переливання (вже є у твоєму CSS) */
+    animation: textGradientFlow 4s linear infinite;
+}
+.summary-price { font-size: 36px; color: var(--accent-cyan); font-weight: 700; font-family: 'Space Grotesk', sans-serif; margin-bottom: 10px; }
+.summary-watts { color: var(--text-muted); margin-bottom: 20px; font-size: 16px; }
+
+.compatibility-box {
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.compatibility-box.warning { background: rgba(234, 179, 8, 0.1); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+.compatibility-box.success { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+.compatibility-box.error { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+.w-100 { width: 100%; }
+
+/* --- ФУТЕР --- */
+
+
+/* --- ВИПРАВЛЕННЯ БІЛИХ СМУГ У СПИСКАХ (OPTGROUP) --- */
+.modern-select optgroup {
+    background-color: var(--bg-dark);
+    color: var(--accent-purple);
+    font-weight: 700;
+    font-style: normal;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* --- МОДАЛЬНЕ ВІКНО ДЛЯ РУЧНОЇ ЗБІРКИ --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1; pointer-events: all;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px; width: 90%; max-width: 800px; height: 80vh;
+    display: flex; flex-direction: column; overflow: hidden;
+    transform: translateY(30px); transition: 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 20px 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.modal-header h3 { color: var(--accent-cyan); font-size: 24px; }
+.close-modal { background: none; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; transition: 0.2s; }
+.close-modal:hover { color: #ef4444; }
+
+.modal-body { padding: 20px 30px; overflow-y: auto; flex: 1; }
+
+.filter-bar { display: flex; gap: 15px; margin-bottom: 20px; }
+
+/* Список товарів у модальному вікні */
+.comp-list-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 20px; background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px;
+    margin-bottom: 10px; cursor: pointer; transition: 0.2s;
+}
+
+.comp-list-item:hover {
+    border-color: var(--accent-cyan); background: rgba(6, 182, 212, 0.05);
+    transform: translateX(5px);
+}
+
+.comp-list-item .item-info { flex: 1; }
+.comp-list-item .item-name { font-size: 18px; font-weight: 600; color: var(--text-main); }
+.comp-list-item .item-desc { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+.comp-list-item .item-price { font-size: 20px; font-weight: 700; color: var(--accent-cyan); font-family: 'Space Grotesk', sans-serif; }
+
+/* --- ЦЕНТРУВАННЯ ТЕКСТУ (Ручна збірка) --- */
+
+
+
+.section-subtitle {
+    text-align: center;
+    font-size: 22px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--accent-cyan);
+    margin: 40px 0 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    width: 100%;
+}
+
+/* --- АНІМАЦІЯ ПЕРЕЛИВАННЯ НА КАРТКАХ (ХОВЕР) --- */
+.slot-card {
+    position: relative;
+    overflow: hidden; /* Щоб градієнт не вилазив за межі */
+    z-index: 1;
+}
+
+.slot-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Той самий градієнт, що переливається */
+    background: linear-gradient(45deg, rgba(6, 182, 212, 0.05), rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.05));
+    background-size: 200% 200%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: gradientShift 3s ease infinite;
+}
+
+.slot-card:hover::before, .comp-list-item:hover::before {
+    opacity: 1;
+}
+
+/* --- ПОКРАЩЕННЯ ФУТЕРА ТА АНІМАЦІЯ ЛІНІЇ --- */
+
+/* --- АНІМАЦІЇ ДЛЯ ГОЛОВНОЇ СТОРІНКИ --- */
+
+
+
+
+/* --- АНІМАЦІЇ ДЛЯ РУЧНОЇ ЗБІРКИ --- */
+
+
+
+
+/* --- СТИЛІ ІКОНОК (SVG) --- */
+.slot-icon svg {
+    width: 28px;
+    height: 28px;
+    transition: 0.3s ease;
+}
+
+.slot-card:hover .slot-icon svg {
+    transform: scale(1.15) rotate(5deg);
+    filter: drop-shadow(0 0 8px var(--accent-cyan));
+}
+
+/* --- АНІМАЦІЯ НАВІГАЦІЙНОГО МЕНЮ (ПЛАВНА ЛІНІЯ ЗНИЗУ) --- */
+.nav-links a {
+    position: relative;
+    padding-bottom: 5px;
+    background: none !important;
+    white-space: nowrap; /* ЗАБОРОНЯЄ ПЕРЕНОС ТЕКСТУ */
+    display: inline-block; /* Робить анімацію рівною */
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; 
+    left: 50%;
+    width: 0; 
+    height: 2px;
+    background: var(--accent-cyan);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.nav-links a:hover::after, .nav-links a.active::after {
+    width: 100%;
+}
+
+.nav-links a:hover {
+    transform: translateY(-2px);
+    color: #fff; /* Текст стає яскравішим */
+}
+
+/* Кнопка "Мій профіль" в меню */
+#btn-profile {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#btn-profile:hover {
+    transform: scale(1.05);
+    background: rgba(139, 92, 246, 0.1);
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+
+
+/* ========================================================= */
+/* === СУЧАСНІ АНІМАЦІЇ ТА ПЕРЕЛИВАННЯ (ГЛОБАЛЬНЕ ОНОВЛЕННЯ) === */
+/* ========================================================= */
+
+/* 1. ГРАДІЄНТНИЙ ТЕКСТ (Заголовки "Ідеальний ПК" та "Ваша конфігурація") */
+
+
+
+
+/* 2. ПІДЗАГОЛОВОК (Без руху, з красивим світінням) */
+
+
+/* 3. КНОПКА "ЗІБРАТИ АВТОМАТИЧНО" (Живий градієнт) */
+.btn-primary {
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan), var(--accent-purple));
+    background-size: 200% auto;
+    animation: bgGradientFlow 3s linear infinite;
+    padding: 14px 30px;
+    font-size: 16px;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.6);
+}
+
+/* 4. КНОПКА "ЗІБРАТИ ВЛАСНОРУЧ" (Ефект пружинки як у "Мій профіль") */
+.btn-secondary {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-secondary:hover {
+    transform: scale(1.05);
+    background: rgba(139, 92, 246, 0.1);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    color: #fff;
+}
+
+/* 5. ПОЛЯ ВВОДУ ТА СПИСКИ (Динамічна реакція на наведення) */
+.modern-input, .modern-select {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modern-input:focus, .modern-select:focus, .modern-select:hover {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.2), inset 0 0 10px rgba(139, 92, 246, 0.1);
+    transform: translateY(-3px); /* Злегка підіймаються назустріч курсору */
+}
+
+/* 6. КАРТКИ ДЕТАЛЕЙ (Переливання при наведенні) */
+.component-card {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.component-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* Той самий градієнт, що переливається */
+    background: linear-gradient(45deg, rgba(6, 182, 212, 0.05), rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.05));
+    background-size: 200% 200%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: gradientShift 3s ease infinite;
+}
+
+.component-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 15px 35px rgba(6, 182, 212, 0.2);
+}
+
+.component-card:hover::before {
+    opacity: 1;
+}
+
+/* 7. ПАНЕЛЬ "ЗАГАЛЬНА ВАРТІСТЬ" (Соковита градієнтна рамка) */
+.build-total {
+    position: relative;
+    background: transparent; /* Робимо прозорим, бо фон задасть ::after */
+    border: none; 
+    border-radius: 12px;
+    z-index: 1;
+    padding: 30px;
+    transform: none; /* Скасовуємо старий виїзд знизу */
+    animation: pulseTotal 3s infinite alternate; /* Легке пульсування */
+}
+
+/* Градієнтна рамка, що постійно рухається */
+.build-total::before {
+    content: "";
+    position: absolute;
+    inset: -3px; /* Виходить за межі на 3px, утворюючи рамку */
+    border-radius: 14px;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-cyan));
+    background-size: 200% auto;
+    z-index: -2;
+    animation: bgGradientFlow 3s linear infinite;
+}
+
+/* Внутрішній темний фон */
+.build-total::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 15, 18, 0.95);
+    border-radius: 11px;
+    z-index: -1;
+}
+
+.build-total span {
+    text-shadow: 0 0 20px var(--accent-cyan);
+}
+
+/* === КЛЮЧОВІ КАДРИ (КІНЕТИКА АНІМАЦІЙ) === */
+@keyframes textShimmer {
+    to { background-position: 200% center; }
+}
+
+@keyframes bgGradientFlow {
+    to { background-position: 200% center; }
+}
+
+@keyframes pulseTotal {
+    0% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); }
+    100% { box-shadow: 0 0 35px rgba(6, 182, 212, 0.6); }
+}
+
+
+
+/* --- 2. ЧИСТИЙ ЗАГОЛОВОК ("Ваша конфігурація") --- */
+
+
+/* --- 3. ЧИСТИЙ ТЕКСТ В ПАНЕЛІ "ЗАГАЛЬНА ВАРТІСТЬ" --- */
+.build-total span {
+    text-shadow: none !important; /* Жодного неону на ціні та балах! */
+}
+
+/* Робимо ціну чіткою бірюзовою */
+.build-total span:first-of-type {
+    color: var(--accent-cyan);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Робимо бали м'яким сірим кольором (приємно для ока) */
+.build-total span:last-of-type {
+    color: var(--text-muted) !important;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+}
+
+/* Анімація для плавного переливання заголовка */
+@keyframes smoothShimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 300% center; }
+}
+
+/* --- 4. ПРЕМІАЛЬНИЙ ФУТЕР --- */
+
+
+/* ========================================================= */
+/* === ГАРАНТОВАНІ АНІМАЦІЇ ТА ВИПРАВЛЕННЯ ДИЗАЙНУ === */
+/* ========================================================= */
+
+
+
+/* 2. ПІДЗАГОЛОВОК (Прибираємо "мило", додаємо м'яку появу) */
+
+
+/* 3. АНІМАЦІЯ ПЕРЕМИКАЧА "ПЕРИФЕРІЯ" */
+.slider {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.slider:before {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Коли перемикач увімкнено - він гарно світиться */
+input:checked + .slider {
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)) !important;
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5) !important;
+}
+
+/* Кружечок всередині перемикача трохи збільшується */
+input:checked + .slider:before {
+    transform: translateX(24px) scale(1.1) !important;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+}
+
+/* 4. СОКОВИТЕ СВІТІННЯ ЦІНИ В ПІДСУМКУ */
+.build-total span:first-of-type, .summary-price {
+    color: var(--accent-cyan) !important;
+    text-shadow: 0 0 10px rgba(6, 182, 212, 0.4), 0 0 20px rgba(6, 182, 212, 0.2) !important; /* Неонове світіння самої ціни */
+    animation: pricePulse 2s ease-in-out infinite alternate !important;
+}
+
+/* 5. ЖИВІ АНІМАЦІЇ ФУТЕРА */
+
+
+/* ========================================================= */
+/* === ФІНАЛЬНІ АНІМАЦІЇ ТА ВИПРАВЛЕННЯ ДИЗАЙНУ === */
+/* ========================================================= */
+
+/* 1. ГАРАНТОВАНА СТАТИЧНА ГРАДІЄНТНА ТЕКСТОВА ПАНЕЛЬ (БЕЗ АНІМАЦІЇ, СВІТЛІШИЙ ГРАДІЄНТ) */
+
+
+/* 2. РАМКА ДЛЯ ВІКНА ПЕРИФЕРІЇ (А НЕ ТУМБЛЕРА) - ПРОЯВЛЯЄТЬСЯ ТІЛЬКИ ПРИ УВІМКНЕННІ */
+.toggle-wrapper {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 25px !important;
+    border-radius: 50px !important;
+    background: #18181b !important;
+    border: none !important;
+    z-index: 1;
+}
+
+/* Animated градієнтна рамка (hidden by default) */
+.toggle-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: -2px; /* Товщина рамки */
+    border-radius: 52px;
+    background: linear-gradient(90deg, #06b6d4, #8b5cf6, #06b6d4);
+    background-size: 200% auto;
+    z-index: -2;
+
+    /* ПОЧАТКОВИЙ СТАН: ПРИХОВАНО */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease; /* Плавна поява */
+}
+
+/* ПОЯВА ТА АНІМАЦІЯ ТІЛЬКИ ПРИ НАЯВНОСТІ КЛАСУ .active-border (ЗАДАЄТЬСЯ JS) */
+.toggle-wrapper.active-border::before {
+    opacity: 1;
+    visibility: visible;
+    animation: PanGradient 3s linear infinite;
+}
+
+/* Темний фон всередині, щоб було видно тільки рамку */
+.toggle-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    background: #18181b;
+    z-index: -1;
+}
+
+/* Прибираємо старе сильне світіння з самого тумблера */
+.slider.round::after { display: none !important; }
+input:checked + .slider {
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)) !important;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.4) !important; /* М'яке і приємне світіння */
+}
+
+/* Спільні Keyframes (для футера тощо) */
+@keyframes PanGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+
+/* --- НОВИЙ СТИЛЬ ЛОГОТИПА CYBERCRAFT --- */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    background: none !important; /* Прибираємо градієнт з усього слова */
+    -webkit-text-fill-color: initial !important; 
+}
+
+.logo:hover {
+    transform: scale(1.03);
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--accent-cyan);
+    filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.4));
+    flex-shrink: 0;
+}
+
+/* Акцент на частині Craft */
+.logo span {
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    margin-left: 2px;
+}
+
+/* ========================================================= */
+/* === АНІМАЦІЯ ДЛЯ ВІКНА СУМІСНОСТІ (РУЧНА ЗБІРКА) === */
+/* ========================================================= */
+
+.compatibility-box.warning {
+    background: rgba(234, 179, 8, 0.05) !important; 
+    color: #facc15 !important; 
+    border: 1px solid rgba(234, 179, 8, 0.4) !important;
+    /* Додаємо плавну пульсацію */
+    animation: warningPulse 1s ease-in-out infinite alternate !important;
+}
+
+/* Ключові кадри для жовтого світіння */
+@keyframes warningPulse {
+    0% { 
+        box-shadow: 0 0 5px rgba(234, 179, 8, 0.1); 
+    }
+    100% { 
+        box-shadow: 0 0 20px rgba(234, 179, 8, 0.4), inset 0 0 10px rgba(234, 179, 8, 0.15); 
+        border-color: rgba(234, 179, 8, 0.7) !important;
+    }
+}
+
+/* Якщо захочеш, щоб зелене (успіх) і червоне (помилка) вікна теж світилися, ось стилі і для них: */
+.compatibility-box.success {
+    animation: successPulse 1s ease-in-out infinite alternate !important;
+}
+.compatibility-box.error {
+    animation: errorPulse 1s ease-in-out infinite alternate !important;
+}
+
+@keyframes successPulse {
+    0% { box-shadow: 0 0 5px rgba(34, 197, 94, 0.1); }
+    100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); border-color: rgba(34, 197, 94, 0.7) !important; }
+}
+@keyframes errorPulse {
+    0% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.1); }
+    100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); border-color: rgba(239, 68, 68, 0.8) !important; }
+}
+
+/* ========================================================= */
+/* === СТИЛІ КАСТОМНОГО ВІКНА ПОМИЛОК === */
+/* ========================================================= */
+
+.alert-modal {
+    max-width: 400px !important;
+    height: auto !important;
+    text-align: center;
+    padding: 35px 30px;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    box-shadow: 0 10px 40px rgba(239, 68, 68, 0.15);
+    background: var(--bg-card);
+}
+
+.alert-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Використовуємо твою існуючу анімацію errorPulse */
+    animation: errorPulse 2s ease-in-out infinite alternate !important; 
+}
+
+.alert-icon svg {
+    width: 32px;
+    height: 32px;
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+}
+
+.alert-title {
+    color: #f8fafc !important;
+    font-size: 24px;
+    margin-bottom: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.alert-text {
+    color: var(--text-muted);
+    font-size: 16px;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+/* ========================================================= */
+/* === БОКОВА ПАНЕЛЬ СЕРВІСІВ (SIDEBAR) === */
+/* ========================================================= */
+
+/* Затемнення фону */
+.sidebar-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 2500;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Сама панель */
+.cyber-sidebar {
+    position: fixed;
+    top: 0; 
+    right: -400px; /* Ховаємо за екраном */
+    width: 100%;
+    max-width: 380px;
+    height: 100vh;
+    background: rgba(15, 15, 18, 0.95);
+    backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(6, 182, 212, 0.3);
+    box-shadow: -15px 0 40px rgba(6, 182, 212, 0.1);
+    z-index: 2600;
+    display: flex;
+    flex-direction: column;
+    transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1); /* Плавний відскок */
+}
+
+.cyber-sidebar.active {
+    right: 0; /* Виїжджає */
+}
+
+/* Шапка панелі */
+.sidebar-header {
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.close-sidebar {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 32px;
+    cursor: pointer;
+    transition: 0.3s;
+    line-height: 1;
+}
+
+.close-sidebar:hover {
+    color: #ef4444; /* Червоний при наведенні */
+    transform: rotate(90deg);
+}
+
+/* Вміст (Список) */
+.sidebar-content {
+    padding: 30px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar-subtitle {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--accent-purple);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.sidebar-menu {
+    list-style: none;
+}
+
+.sidebar-menu li {
+    margin-bottom: 15px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 18px;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-menu a:hover {
+    background: rgba(6, 182, 212, 0.05);
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    transform: translateX(10px); /* Від'їжджає вправо */
+    box-shadow: 0 5px 15px rgba(6, 182, 212, 0.1);
+}
+
+.menu-icon {
+    font-size: 22px;
+}
+
+/* Підвал панелі */
+.sidebar-footer {
+    padding: 20px !important;
+    text-align: center !important;
+    font-size: 12px !important;
+    color: #64748b !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    letter-spacing: 1px !important;
+    
+    /* ПРИБИРАЄМО стару статичну рамку */
+    border-top: none !important;
+    
+    /* РОБИМО КОНТЕЙНЕР відносним для нашої смуги */
+    position: relative !important; 
+}
+
+.sidebar-footer::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important; 
+    left: 0 !important;
+    width: 100% !important;
+    height: 2px !important; 
+    
+    /* Градієнт, що переливається (використовуємо background-image) */
+    background-image: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--accent-cyan) 25%, 
+        var(--accent-purple) 50%, 
+        var(--accent-cyan) 75%, 
+        transparent 100%) !important;
+    background-size: 200% 100% !important;
+    
+    /* Легке світіння */
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.4) !important;
+    
+    animation: sidebarLineFlow 3s linear infinite !important; 
+    opacity: 0.8 !important;
+}
+
+/* Сама анімація руху */
+@keyframes sidebarLineFlow {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ========================================================= */
+/* === АНІМАЦІЯ КНОПКИ "СЕРВІСИ" В МЕНЮ === */
+/* ========================================================= */
+#btn-open-sidebar {
+    transition: all 0.3s ease !important;
+}
+
+/* Плавність для самої іконки (з ефектом пружини) */
+#btn-open-sidebar svg {
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; 
+}
+
+/* Ефекти при наведенні на саму кнопку */
+#btn-open-sidebar:hover {
+    color: var(--accent-cyan) !important;
+    text-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+    transform: translateY(-2px); /* Легке підняття тексту вгору */
+}
+
+/* Ефекти для іконки при наведенні на кнопку */
+#btn-open-sidebar:hover svg {
+    transform: rotate(90deg) scale(1.15); /* Обертання на 90 градусів і збільшення */
+    filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.8)); /* Неонове світіння іконки */
+}
+
+/* ========================================================= */
+/* === СТИЛІ ІКОНОК БОКОВОЇ ПАНЕЛІ === */
+/* ========================================================= */
+.menu-icon-svg {
+    width: 22px;
+    height: 22px;
+    color: var(--accent-purple); /* Базовий колір іконок */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    flex-shrink: 0;
+}
+
+/* Коли наводимо на посилання в меню — іконка стає бірюзовою і світиться */
+.sidebar-menu a:hover .menu-icon-svg {
+    color: var(--accent-cyan);
+    filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.6));
+    transform: scale(1.1);
+}
+
+/* ========================================================= */
+/* === СТИЛІ СТОРІНКИ БЕНЧМАРКІВ (BOTTLENECK) === */
+/* ========================================================= */
+
+/* ========================================================= */
+/* === СТИЛІ СТОРІНКИ БЕНЧМАРКІВ (BOTTLENECK) === */
+/* ========================================================= */
+
+.benchmark-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px; /* Велике вікно, вирівняне по центру */
+    margin: 40px auto 0; 
+    gap: 30px;
+    animation: smoothFadeInUp 0.8s ease-out forwards;
+}
+
+.bench-controls {
+    background: rgba(24, 24, 27, 0.85);
+    backdrop-filter: blur(16px);
+    padding: 50px 60px;
+    border-radius: 20px;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    
+    /* Додаємо ці рядки для центрування всього всередині */
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+}
+
+.bench-controls:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 60px rgba(6, 182, 212, 0.15), inset 0 0 30px rgba(6, 182, 212, 0.1);
+}
+
+.control-group {
+    margin-bottom: 30px;
+    width: 100%; /* Щоб група займала всю ширину */
+    max-width: 500px; /* Але самі списки не розтягувалися занадто сильно */
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    
+    /* Центруємо текст підпису */
+    text-align: center; 
+    
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.bench-controls .modern-select {
+    width: 100%;
+    text-align: center; /* Центруємо текст всередині списку */
+    text-align-last: center; /* Для підтримки в різних браузерах */
+    padding: 16px 20px;
+    font-size: 16px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#btn-run-bench {
+    width: 100%;
+    max-width: 500px;
+    padding: 18px;
+    font-size: 18px;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+/* Панель результатів */
+.result-card {
+    background: rgba(15, 15, 18, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 50px 30px;
+    border-radius: 20px;
+    border: 2px solid var(--accent-cyan);
+    text-align: center;
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.result-card h3 {
+    color: var(--text-muted);
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+.bottleneck-value {
+    font-size: 90px; /* Величезний текст результату */
+    font-weight: 800;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--accent-cyan);
+    text-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+    line-height: 1;
+    margin: 20px 0;
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+}
+
+.bottleneck-desc {
+    font-size: 18px;
+    color: var(--text-main);
+    margin-bottom: 40px;
+    font-weight: 500;
+}
+
+/* Смуга навантаження */
+.progress-bar-container {
+    width: 100%;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    width: 0%;
+    border-radius: 20px;
+    transition: width 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.5s ease;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+}
+
+/* Макет для двох списків в один рядок */
+.bench-split-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Макет для результатів (дві колонки: Ботлнек і FPS) */
+.bench-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-box h4 {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.fps-value {
+    font-size: 80px;
+    font-weight: 800;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--accent-purple);
+    text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+    line-height: 1;
+    margin: 15px 0;
+}
+
+/* На мобільних - все в один стовпець */
+@media (max-width: 600px) {
+    .bench-split-group, .bench-stats-grid { grid-template-columns: 1fr; }
+}
+
+/* ========================================================= */
+/* === СТИЛІ ДЛЯ КНОПКИ ІНФО ТА ХАРАКТЕРИСТИК === */
+/* ========================================================= */
+.item-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-info {
+    background: rgba(6, 182, 212, 0.1);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    color: var(--accent-cyan);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-info:hover {
+    background: var(--accent-cyan);
+    color: #fff;
+    transform: scale(1.15) rotate(10deg);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+}
+
+/* Список всередині модального вікна характеристик */
+.specs-list {
+    list-style: none;
+    padding: 0;
+}
+
+.specs-list li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.specs-list li:last-child { border-bottom: none; }
+
+.spec-key {
+    color: var(--text-muted);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.spec-val {
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 15px;
+    text-align: right;
+    max-width: 60%;
+}
+
+/* Сітка для Аналізатора охолодження (3 колонки) */
+.thermal-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+    .thermal-stats-grid { grid-template-columns: 1fr; }
+}
+
+
+
+/* ========================================================= */
+/* === АНІМАЦІЯ БЛІКУ ДЛЯ ОПИСІВ СТОРІНОК (ЧИСТИЙ КОД) === */
+/* ========================================================= */
+
+/* 1. Контейнер відповідає ЗА ПОЯВУ (виїзд знизу) */
+.text-center-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    animation: slideUpFade 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0; /* Буде 1 в кінці анімації */
+}
+
+/* 2. Текст відповідає ТІЛЬКИ ЗА БЛІК (градієнт) */
+.page-desc {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.6;
+    font-family: 'Space Grotesk', sans-serif;
+
+    /* Холодний металевий градієнт із яскравим білим та бірюзовим бліком по центру */
+    background: linear-gradient(
+        110deg, 
+        #94a3b8 20%, 
+        #ffffff 40%, 
+        var(--accent-cyan) 50%, 
+        #ffffff 60%, 
+        #94a3b8 80%
+    );
+    background-size: 200% auto;
+    
+    /* Робимо текст прозорим, щоб було видно фон */
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* ТІЛЬКИ анімація бліку. Жодних transform! */
+    animation: cyberGlare 4s linear infinite;
+}
+
+/* Ключові кадри для нескінченного пробігання бліку */
+@keyframes cyberGlare {
+    0% { background-position: 200% center; }
+    100% { background-position: -200% center; }
+}
+
+/* ========================================================= */
+/* === ЧИСТІ ЕСТЕТИЧНІ АНІМАЦІЇ ТЕКСТІВ === */
+/* ========================================================= */
+
+
+
+/* 2. ПІДЗАГОЛОВОК ("Використовуй розумний підбір...") */
+
+
+/* 3. ОПИСИ СТОРІНОК (Блік) */
+.page-desc {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: linear-gradient(
+        110deg, 
+        #808fadd9 30%, 
+        #ffffff 45%, 
+        rgba(6, 182, 212, 0.9) 50%, 
+        #ffffff 55%, 
+        #808fadd9 70%
+    );
+    background-size: 250% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: slowCyberGlare 6s linear infinite;
+}
+
+/* === КЛЮЧОВІ КАДРИ === */
+@keyframes slowGradientFlow {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+@keyframes breathingGlow {
+    0% { 
+        text-shadow: 0 0 5px rgba(6, 182, 212, 0.05); 
+        transform: translateY(0); 
+    }
+    100% { 
+        text-shadow: 0 0 18px rgba(6, 182, 212, 0.4); 
+        transform: translateY(-2px); 
+    }
+}
+
+@keyframes slowCyberGlare {
+    0% { background-position: 200% center; }
+    100% { background-position: -150% center; }
+}
+
+/* ========================================================= */
+/* === ЧИСТІ АНІМАЦІЇ ДЛЯ ГОЛОВНОГО ЗАГОЛОВКУ ТА ПІДЗАГОЛОВКУ === */
+/* ========================================================= */
+
+/* 1. ГОЛОВНИЙ ЗАГОЛОВОК ("Збери свій ідеальний комп'ютер") */
+.hero-title {
+    /* 4 кольори для безшовного циклічного переливання */
+    background: linear-gradient(90deg, #06b6d4, #ffffff, #8b5cf6, #06b6d4);
+    background-size: 200% auto;
+    
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Додаємо плавний рух градієнта */
+    animation: slowGradientFlow 8s linear infinite;
+    
+    text-shadow: none;
+    margin-bottom: 20px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 56px;
+    line-height: 1.1;
+}
+
+/* 2. ПІДЗАГОЛОВОК ("Використовуй розумний підбір...") */
+.hero-subtitle {
+    color: #e2e8f0;
+    font-weight: 400;
+    font-size: 20px;
+    margin-bottom: 40px;
+    
+    /* Спочатку текст повністю прозорий */
+    opacity: 0; 
+    
+    /* ДВІ АНІМАЦІЇ: спочатку виїжджає вгору, а потім починає "дихати" */
+    animation: 
+        smoothFadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
+        breathingGlow 4s ease-in-out 1.2s infinite alternate; 
+}
+
+/* === КЛЮЧОВІ КАДРИ ДЛЯ ЦИХ АНІМАЦІЙ === */
+
+/* Плавний рух градієнта по колу */
+@keyframes slowGradientFlow {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* Плавна поява знизу (для підзаголовка) */
+@keyframes smoothFadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* М'яке "дихання" підзаголовка (світіння + мікро-рух) */
+@keyframes breathingGlow {
+    0% { 
+        text-shadow: 0 0 5px rgba(6, 182, 212, 0.05); 
+        transform: translateY(0); 
+    }
+    100% { 
+        text-shadow: 0 0 18px rgba(6, 182, 212, 0.4); 
+        transform: translateY(-2px); 
+    }
+}
+
+/* ========================================================= */
+/* === АНІМАЦІЯ ДЛЯ ЗАГОЛОВКА "ВАША КОНФІГУРАЦІЯ" === */
+/* ========================================================= */
+
+.section-title {
+    font-size: 36px;
+    margin-bottom: 40px;
+    text-align: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+
+    /* Градієнт: Cyan -> White -> Purple (більш насичений) */
+    background: linear-gradient(90deg, var(--accent-cyan), #ffffff, var(--accent-purple), var(--accent-cyan));
+    background-size: 200% auto;
+    
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* Анімація переливання + Неоновий пульс */
+    animation: 
+        textGradientFlow 5s linear infinite,
+        neonPulse 3s ease-in-out infinite alternate !important;
+}
+
+/* Спеціальний Keyframe для пульсації кольорового тексту */
+@keyframes neonPulse {
+    0% {
+        filter: drop-shadow(0 0 2px rgba(6, 182, 212, 0.2));
+    }
+    100% {
+        filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.5));
+    }
+}
+
+/* Використовуємо вже існуючий slowGradientFlow або додаємо цей для надійності */
+@keyframes textGradientFlow {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* ========================================================= */
+/* === ФІНАЛЬНІ ТА ОЧИЩЕНІ АНІМАЦІЇ ТЕКСТІВ І ЗАГОЛОВКІВ === */
+/* ========================================================= */
+
+/* --- 1. ГОЛОВНИЙ ЗАГОЛОВОК ("Збери свій ідеальний комп'ютер") --- */
+.hero-title {
+    background: linear-gradient(90deg, #06b6d4, #ffffff, #8b5cf6, #06b6d4);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: slowGradientFlow 8s linear infinite;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* --- 2. ПІДЗАГОЛОВОК ("Використовуй розумний підбір...") --- */
+.hero-subtitle {
+    font-size: 21px; /* Зробили трохи більшим для кращої читабельності */
+    font-weight: 500;
+    margin-bottom: 40px;
+    opacity: 0; 
+    
+    /* Новий преміальний градієнт: Срібний -> Бірюзовий -> Фіолетовий -> Срібний */
+    background: linear-gradient(90deg, #e2e8f0 0%, #22d3ee 33%, #c084fc 66%, #e2e8f0 100%);
+    background-size: 300% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Трійна анімація: виїзд знизу + переливання кольору + легке дихання світінням */
+    animation: 
+        slideUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
+        subtitleShimmer 6s linear 1.2s infinite,
+        breathingGlow 4s ease-in-out 1.2s infinite alternate; 
+}
+
+/* --- 3. ЗАГОЛОВКИ СЕКЦІЙ ("Ваша конфігурація", "Аналізатор") --- */
+.section-title {
+    font-size: 36px;
+    margin-bottom: 40px;
+    text-align: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent-cyan), #ffffff, var(--accent-purple), var(--accent-cyan));
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: 
+        slowGradientFlow 5s linear infinite,
+        neonPulse 3s ease-in-out infinite alternate;
+}
+
+/* --- 4. ОПИСИ СТОРІНОК (Анімація появи + Блік) --- */
+.text-center-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    opacity: 0; /* Стартує невидимим */
+    animation: slideUpFade 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s forwards; /* 0.3s затримка */
+}
+
+.page-desc {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.6;
+    font-family: 'Space Grotesk', sans-serif;
+    background: linear-gradient(
+        110deg, 
+        #808fadd9 30%, 
+        #ffffff 45%, 
+        rgba(6, 182, 212, 0.9) 50%, 
+        #ffffff 55%, 
+        #808fadd9 70%
+    );
+    background-size: 250% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: slowCyberGlare 6s linear infinite;
+}
+
+/* ========================================================= */
+/* === ВСІ НЕОБХІДНІ КЛЮЧОВІ КАДРИ (KEYFRAMES) === */
+/* ========================================================= */
+
+/* Поява знизу вгору (Повертає втрачені тексти до життя!) */
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Повільний рух градієнта */
+@keyframes slowGradientFlow {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* "Дихання" підзаголовка */
+/* М'яке "дихання" підзаголовка (ТІЛЬКИ світіння, без ривків) */
+@keyframes breathingGlow {
+    0% { 
+        text-shadow: 0 0 5px rgba(6, 182, 212, 0.1); 
+    }
+    100% { 
+        text-shadow: 0 0 22px rgba(6, 182, 212, 0.7), 0 0 10px rgba(139, 92, 246, 0.4); 
+    }
+}
+
+/* Блік по металевому тексту */
+@keyframes slowCyberGlare {
+    0% { background-position: 200% center; }
+    100% { background-position: -150% center; }
+}
+
+/* Неонове пульсування для "Ваша конфігурація" */
+@keyframes neonPulse {
+    0% { filter: drop-shadow(0 0 2px rgba(6, 182, 212, 0.2)); }
+    100% { filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.5)); }
+}
+
+@keyframes subtitleShimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 300% center; }
+}
+
+/* ========================================================= */
+/* === ФОКУС ДЛЯ ПОЛЯ ВВОДУ ТЕМПЕРАТУРИ === */
+/* ========================================================= */
+#therm-ambient-input {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+#therm-ambient-input:focus {
+    border-color: var(--accent-cyan) !important;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.3), inset 0 0 10px rgba(139, 92, 246, 0.2) !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    transform: translateY(-2px); /* Легко підіймається назустріч курсору */
+    outline: none !important;
+}
+
+/* ========================================================= */
+/* === СТИЛІ ЕКСПОРТУ: КНОПКИ ТА ІКОНКИ === */
+/* ========================================================= */
+.export-section { margin-top: 25px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.05); }
+.export-title { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; text-align: center; margin-bottom: 20px; font-family: 'Space Grotesk', sans-serif;}
+.export-btn-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+.btn-export {
+    flex: 1; min-width: 90px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px; padding: 12px 10px;
+    color: var(--text-muted); font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.btn-export svg { width: 22px; height: 22px; transition: all 0.3s ease; stroke: currentColor; }
+
+/* Анімація для PDF (Червона) */
+.btn-export.pdf:hover { border-color: #ef4444; background: rgba(239,68,68,0.05); color: #ef4444; transform: translateY(-4px); box-shadow: 0 5px 15px rgba(239,68,68,0.2); }
+.btn-export.pdf:hover svg { filter: drop-shadow(0 0 5px #ef4444); transform: scale(1.15); }
+
+/* Анімація для Markdown (Фіолетова) */
+.btn-export.md:hover { border-color: var(--accent-purple); background: rgba(139,92,246,0.05); color: var(--accent-purple); transform: translateY(-4px); box-shadow: 0 5px 15px rgba(139,92,246,0.2); }
+.btn-export.md:hover svg { filter: drop-shadow(0 0 5px var(--accent-purple)); transform: scale(1.15); }
+
+/* Анімація для Посилання (Зелена) */
+.btn-export.link:hover { border-color: #4ade80; background: rgba(74,222,128,0.05); color: #4ade80; transform: translateY(-4px); box-shadow: 0 5px 15px rgba(74,222,128,0.2); }
+.btn-export.link:hover svg { filter: drop-shadow(0 0 5px #4ade80); transform: scale(1.15); }
+
+/* ========================================================= */
+/* === СТИЛІ СТОРІНКИ ПОРІВНЯННЯ (VS) === */
+/* ========================================================= */
+.compare-tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; }
+.compare-tab { background: transparent; border: 2px solid rgba(255,255,255,0.1); color: var(--text-muted); padding: 12px 30px; border-radius: 50px; font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.compare-tab.active { background: rgba(6, 182, 212, 0.1); border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: 0 0 20px rgba(6, 182, 212, 0.2); }
+.compare-tab:hover:not(.active) { color: #fff; border-color: rgba(255,255,255,0.3); }
+
+.compare-content { display: none; animation: smoothFadeInUp 0.5s forwards; }
+.compare-content.active { display: block; }
+
+.compare-controls { background: rgba(24, 24, 27, 0.85); backdrop-filter: blur(16px); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px; }
+
+.vs-layout { display: flex; align-items: center; justify-content: center; gap: 30px; position: relative; }
+@media (max-width: 768px) { .vs-layout { flex-direction: column; } }
+.vs-side { flex: 1; width: 100%; max-width: 400px; }
+.vs-side .modern-select { width: 100%; text-align: center; text-align-last: center; }
+
+.vs-badge { background: linear-gradient(135deg, var(--bg-dark), #18181b); color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 24px; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--accent-cyan); box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); z-index: 2; flex-shrink: 0; }
+
+.compare-result { background: rgba(15, 15, 18, 0.7); backdrop-filter: blur(10px); padding: 40px; border-radius: 20px; border: 1px solid rgba(139, 92, 246, 0.3); box-shadow: 0 0 30px rgba(139, 92, 246, 0.1); text-align: center; }
+.compare-result h3 { font-family: 'Space Grotesk', sans-serif; color: var(--text-main); margin-bottom: 25px; font-size: 22px; }
+
+.adv-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 15px; }
+.adv-item { background: rgba(255,255,255,0.02); border-left: 4px solid var(--accent-cyan); padding: 15px 20px; border-radius: 0 8px 8px 0; text-align: left; font-size: 16px; display: flex; gap: 15px; align-items: center; color: #e2e8f0; }
+.adv-item svg { flex-shrink: 0; color: var(--accent-cyan); width: 24px; height: 24px; filter: drop-shadow(0 0 5px var(--accent-cyan)); }
+
+/* ========================================================= */
+/* === КНОПКА СОРТУВАННЯ ЦІНИ (МОДАЛЬНЕ ВІКНО) === */
+/* ========================================================= */
+.btn-sort {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-muted);
+    width: 48px;
+    height: 48px; /* Вирівнюємо по висоті з інпутом */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    flex-shrink: 0;
+}
+
+.btn-sort:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    background: rgba(6, 182, 212, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+}
+
+.btn-sort svg {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Коли data-order="asc" (від дешевшого), стрілка дивиться вгору */
+.btn-sort[data-order="asc"] svg {
+    transform: rotate(180deg); 
+}
+
+/* Коли data-order="desc" (від дорожчого), стрілка дивиться вниз */
+.btn-sort[data-order="desc"] svg {
+    transform: rotate(0deg); 
+}
+
+/* ========================================================= */
+/* === АНІМОВАНІ ЗАГОЛОВКИ РЕЗУЛЬТАТІВ (Порівняння, Бенчмарк, Охолодження) === */
+/* ========================================================= */
+#compare-items-result h3, 
+.result-card h3, 
+#therm-results-panel h3 {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    margin-bottom: 30px !important;
+    text-align: center !important;
+    
+    /* Створюємо живий градієнт (Бірюзовий -> Білий -> Фіолетовий) */
+    background: linear-gradient(90deg, var(--accent-cyan), #ffffff, var(--accent-purple), var(--accent-cyan)) !important;
+    background-size: 200% auto !important;
+    
+    /* Робимо текст прозорим, щоб градієнт став кольором букв */
+    color: transparent !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    
+    /* Подвійна анімація: рух кольорів + неонове пульсування */
+    animation: 
+        textGradientFlow 4s linear infinite,
+        neonPulse 3s ease-in-out infinite alternate !important;
+}
+
+/* ========================================================= */
+/* === СТИЛІ СТОРІНКИ АНАЛІТИКИ ЦІН === */
+/* ========================================================= */
+
+/* Сітка для карток магазинів */
+.stores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.store-card {
+    background: rgba(15, 15, 18, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.3s ease;
+    animation: fadeUp 0.5s forwards;
+}
+
+.store-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-purple);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+}
+
+.store-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.store-price {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+}
+
+.btn-store {
+    background: transparent;
+    color: #fff;
+    border: 2px solid var(--accent-purple);
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.btn-store:hover {
+    background: var(--accent-purple);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+}
+
+/* CSS ГРАФІК (BAR CHART) */
+.css-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 250px;
+    padding-bottom: 30px; /* Місце для підписів знизу */
+    position: relative;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+}
+
+.chart-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 12%;
+    height: 100%;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.chart-bar {
+    width: 100%;
+    background: linear-gradient(0deg, rgba(6, 182, 212, 0.2), var(--accent-cyan));
+    border-radius: 6px 6px 0 0;
+    transition: height 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+.chart-bar:hover {
+    background: linear-gradient(0deg, rgba(139, 92, 246, 0.2), var(--accent-purple));
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+}
+
+/* Спливаюча ціна над стовпчиком */
+.chart-tooltip {
+    position: absolute;
+    top: -30px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #fff;
+    opacity: 0;
+    transition: 0.3s;
+    white-space: nowrap;
+}
+
+.chart-bar:hover .chart-tooltip {
+    opacity: 1;
+    transform: translateY(-5px);
+}
+
+/* Підписи місяців */
+.chart-label {
+    position: absolute;
+    bottom: -25px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* ========================================================= */
+/* === СТИЛІ ПРОФІЛЮ ТА АВТОРИЗАЦІЇ === */
+/* ========================================================= */
+
+.profile-card {
+    background: rgba(24, 24, 27, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.profile-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--accent-cyan);
+    font-size: 22px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.saved-build-item {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-left: 4px solid var(--accent-purple);
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.saved-build-item:hover {
+    background: rgba(139, 92, 246, 0.1);
+    transform: translateX(5px);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+}
+
+.saved-build-name {
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.saved-build-id {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .profile-layout { grid-template-columns: 1fr !important; }
+}
+
+/* ========================================================= */
+/* === СТИЛЬ УСІХ ІНПУТІВ ТА ФОРМ АВТОРИЗАЦІЇ === */
+/* ========================================================= */
+
+.modern-input {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 15px;
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px;
+    color: var(--text-main) !important;
+    font-family: 'Space Grotesk', sans-serif;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modern-input:focus {
+    border-color: var(--accent-cyan) !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.2) !important;
+    transform: translateY(-2px);
+}
+
+/* ========================================================= */
+/* === АВАТАРКА ТА ШАПКА ПРОФІЛЮ === */
+/* ========================================================= */
+
+/* ========================================================= */
+/* === АВАТАРКА ТА ШАПКА ПРОФІЛЮ === */
+/* ========================================================= */
+
+/* ========================================================= */
+/* === АВАТАРКА ТА ШАПКА ПРОФІЛЮ (ВИПРАВЛЕНО) === */
+/* ========================================================= */
+
+/* ========================================================= */
+/* === ШАПКА ПРОФІЛЮ (ПОВЕРНУТО ТА ВИПРАВЛЕНО) === */
+/* ========================================================= */
+
+/* ========================================================= */
+/* === ШАПКА ПРОФІЛЮ (ЧИСТИЙ ВАРІАНТ З ГОРИЗОНТАЛЬНИМ ТЕКСТОМ) === */
+/* ========================================================= */
+
+/* ========================================================= */
+/* === ШАПКА ПРОФІЛЮ (ІДЕАЛЬНЕ ВИРІВНЮВАННЯ) === */
+/* ========================================================= */
+
+/* ========================================================= */
+/* === ШАПКА ПРОФІЛЮ (ІДЕАЛЬНЕ ВИРІВНЮВАННЯ) === */
+/* ========================================================= */
+
+/* ========================================================= */
+/* === ЧИСТА ШАПКА ПРОФІЛЮ === */
+/* ========================================================= */
+
+.profile-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important; 
+    justify-content: flex-start !important;
+    gap: 20px !important; 
+    margin-bottom: 30px !important; 
+    padding-bottom: 20px !important;
+    border-bottom: 1px dashed rgba(255,255,255,0.1) !important; 
+    width: 100% !important; 
+}
+
+.profile-avatar-container {
+    position: relative !important;
+    width: 75px !important; 
+    height: 75px !important;
+    cursor: pointer !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4) !important;
+    flex-shrink: 0 !important;
+    transition: 0.3s !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.profile-avatar-container:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.5) !important;
+}
+
+.profile-avatar {
+    position: absolute !important; 
+    inset: 0 !important;
+    width: 100% !important; 
+    height: 100% !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 32px !important; 
+    font-weight: 800 !important;
+    color: #fff !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    text-transform: uppercase !important;
+}
+
+#profile-avatar-img {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    z-index: 5 !important;
+}
+
+.avatar-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #fff !important;
+    opacity: 0;
+    transition: opacity 0.3s ease !important;
+    z-index: 10 !important; 
+}
+
+.profile-avatar-container:hover .avatar-overlay {
+    opacity: 1 !important;
+}
+
+.avatar-overlay svg {
+    width: 24px !important; 
+    height: 24px !important;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important;
+}
+
+/* Притискаємо текст ліворуч до аватарки */
+.profile-title-area {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important; 
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    flex: 1 !important; /* Розтягує блок вправо, притискаючи текст до аватарки */
+}
+
+.profile-title-area h3 {
+    margin: 0 0 5px 0 !important; 
+    font-size: 24px !important; 
+    color: var(--text-main) !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    line-height: 1 !important;
+    text-align: left !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.profile-role {
+    margin: 0 !important;
+    color: var(--accent-cyan) !important;
+    font-size: 13px !important; 
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    font-weight: 700 !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    line-height: 1 !important;
+    text-align: left !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* ========================================================= */
+/* === АКОРДЕОН ЗБЕРЕЖЕНИХ ЗБІРОК === */
+/* ========================================================= */
+
+.saved-build-item {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-left: 4px solid var(--accent-purple);
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s;
+    overflow: hidden;
+}
+
+.saved-build-item:hover {
+    background: rgba(139, 92, 246, 0.1);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+}
+
+.saved-build-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+}
+
+.build-actions { display: flex; gap: 10px; }
+
+.btn-edit-build {
+    background: transparent; border: none; color: var(--text-muted); cursor: pointer; transition: 0.3s;
+}
+.btn-edit-build:hover { color: var(--accent-cyan); transform: scale(1.15); filter: drop-shadow(0 0 5px var(--accent-cyan)); }
+
+/* Анімація випадання списку деталей */
+.saved-build-details {
+    max-height: 0;
+    opacity: 0;
+    transition: all 0.4s ease-out;
+    margin-top: 0;
+}
+
+.saved-build-item.expanded .saved-build-details {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed rgba(255,255,255,0.1);
+}
+
+.saved-build-item.expanded .expand-icon { transform: rotate(180deg); }
+
+.build-component-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+.build-component-row:last-child { border: none; }
+.comp-label { color: var(--text-muted); width: 30%; }
+.comp-val { color: var(--text-main); font-weight: 500; text-align: right; width: 70%; font-family: 'Space Grotesk', sans-serif; }
+
+/* ========================================================= */
+/* === ВИПРАВЛЕННЯ Z-INDEX ДЛЯ ВІКНА ПОМИЛОК ТА УСПІХУ === */
+/* ========================================================= */
+#error-modal {
+    z-index: 9999 !important; /* Гарантовано поверх вікна авторизації (яке має 2000) */
+}
+
+/* ========================================================= */
+/* === АНІМАЦІЯ ТЕКСТІВ У ПРОФІЛІ === */
+/* ========================================================= */
+/* Робимо заголовок "Збережені конфігурації" градієнтним та живим */
+.profile-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    background: linear-gradient(90deg, var(--accent-cyan), #ffffff, var(--accent-purple), var(--accent-cyan));
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textGradientFlow 4s linear infinite;
+}
+
+/* Анімація для тексту "У вас ще немає збережених збірок" */
+.empty-builds-text {
+    color: var(--text-muted); 
+    text-align: center; 
+    padding: 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    animation: softPulseText 3s ease-in-out infinite alternate;
+}
+
+@keyframes softPulseText {
+    0% { opacity: 0.5; filter: drop-shadow(0 0 2px transparent); }
+    100% { opacity: 1; filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5)); color: #fff; }
+}
+
+/* Трохи адаптуємо кнопки експорту для карток профілю */
+.saved-build-item .btn-export {
+    padding: 8px 5px;
+    font-size: 11px;
+    min-width: 80px;
+}
+.saved-build-item .btn-export svg {
+    width: 18px; height: 18px;
+}
+
+/* ========================================================= */
+/* === СТИЛІ ЗБЕРЕЖЕНИХ АКАУНТІВ (ШВИДКИЙ ВХІД) === */
+/* ========================================================= */
+
+.saved-account-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.saved-account-card:hover {
+    background: rgba(6, 182, 212, 0.05);
+    border-color: var(--accent-cyan);
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(6, 182, 212, 0.15);
+}
+
+.saved-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #fff;
+    font-size: 18px;
+    font-family: 'Space Grotesk', sans-serif;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+}
+
+.saved-info {
+    flex: 1;
+    text-align: left;
+}
+
+.saved-email {
+    color: var(--text-main);
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.saved-hint {
+    color: var(--text-muted);
+    font-size: 12px;
+    transition: 0.3s;
+}
+
+.saved-account-card:hover .saved-hint {
+    color: var(--accent-cyan);
+}
+
+.btn-remove-account {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-remove-account:hover {
+    color: #ef4444;
+    transform: scale(1.2) rotate(90deg);
+    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.5));
+}
+
+/* ========================================================= */
+/* === ЕКСТРЕНЕ ФІНАЛЬНЕ ВИРІВНЮВАННЯ (ПРОФІЛЬ) === */
+/* ========================================================= */
+
+/* ========================================================= */
+/* === ЦЕНТРУВАННЯ ЗАГОЛОВКІВ КАРТОК === */
+/* ========================================================= */
+/* ========================================================= */
+/* === ЦЕНТРУВАННЯ ТА ЗБІЛЬШЕННЯ ТЕКСТУ ПРОФІЛЮ === */
+/* ========================================================= */
+
+/* Центруємо заголовки карток (Зміна пароля тощо) */
+/* ========================================================= */
+/* === ФІНАЛЬНИЙ ФІКС: АВАТАРКА ТА ТЕКСТ РАЗОМ ПО ЦЕНТРУ === */
+/* ========================================================= */
+
+/* Центруємо заголовки "Зміна пароля" та "Збережені конфігурації" */
+/* ========================================================= */
+/* === СУПЕР-ФІКС: ІДЕАЛЬНЕ ЦЕНТРУВАННЯ ТЕКСТУ (GRID) === */
+/* ========================================================= */
+
+.profile-card > h3 {
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+    margin-bottom: 25px !important;
+}
+
+/* 1. Використовуємо Grid (Сітку) для математично точного балансу */
+.profile-header {
+    display: grid !important;
+    grid-template-columns: 100px 1fr 5px !important; /* Ліва: 100px, Центр: все місце, Права: 100px (пуста) */
+    align-items: center !important;
+    margin-bottom: 30px !important; 
+    padding-bottom: 20px !important;
+    border-bottom: 1px dashed rgba(255,255,255,0.1) !important; 
+    width: 100% !important; 
+    gap: 0 !important;
+}
+
+/* Приховуємо input, щоб він випадково не зайняв пусту колонку */
+.profile-header input[type="file"] {
+    display: none !important;
+}
+
+/* 2. Аватарка жорстко сидить у першій колонці (зліва) */
+.profile-avatar-container {
+    grid-column: 1 !important;
+    width: 85px !important; 
+    height: 85px !important;
+    position: relative !important;
+    cursor: pointer !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4) !important;
+    overflow: hidden !important;
+}
+
+.profile-avatar {
+    font-size: 45px !important;
+}
+
+/* 3. Текст жорстко сидить у другій колонці (строго по центру вікна) */
+.profile-title-area {
+    grid-column: 2 !important;
+    display: flex !important;
+    flex-direction: column !important; 
+    align-items: center !important; /* Центруємо текст всередині колонки */
+    justify-content: center !important;
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 15px !important;
+}
+
+/* ІМ'Я */
+.profile-title-area h3, #profile-display-name {
+    margin: 0 !important; 
+    font-size: 35px !important; /* Величезний шрифт */
+    color: var(--text-main) !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 100% !important; 
+    letter-spacing: 5px !important; /* Розтягнуто */
+}
+
+/* РОЛЬ */
+.profile-role {
+    margin: 0 !important;
+    color: var(--accent-cyan) !important;
+    font-size: 15px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 5px !important; /* Сильно розтягнуто */
+    font-weight: 700 !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 120% !important; 
+    display: block !important;
+}
+
+/* ========================================================= */
+/* === АНІМАЦІЯ ВАРТОСТІ В "РОЗУМНІЙ ЗБІРЦІ" === */
+/* ========================================================= */
+
+.smart-total-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+    /* Красивий градієнт, що переливається: Бірюзовий -> Білий -> Фіолетовий */
+    background: linear-gradient(90deg, var(--accent-cyan), #ffffff, var(--accent-purple), var(--accent-cyan));
+    background-size: 200% auto;
+    
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Плавна анімація переливання */
+    animation: textGradientFlow 4s linear infinite;
+    margin-right: 10px;
+}
+
+.smart-total-price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    /* Глибоке неонове світіння для самої суми */
+    text-shadow: 0 0 15px rgba(6, 182, 212, 0.6), 0 0 30px rgba(6, 182, 212, 0.3);
+    animation: pricePulse 2s ease-in-out infinite alternate;
+}
+
+/* ========================================================= */
+/* === ЧИСТИЙ ТА ПРЕМІАЛЬНИЙ ФУТЕР (ФІНАЛ) === */
+/* ========================================================= */
+
+/* Основний каркас футера */
+/* ========================================================= */
+/* === ЧИСТИЙ ТА ПРЕМІАЛЬНИЙ ФУТЕР (ФІНАЛ) === */
+/* ========================================================= */
+
+.wide-footer {
+    background: rgba(9, 9, 11, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border-top: 1px solid rgba(6, 182, 212, 0.2) !important;
+    box-shadow: inset 0 20px 50px -20px rgba(6, 182, 212, 0.1) !important;
+    position: relative !important;
+    
+    /* ЗВУЖЕНО: відступ зверху 40px (замість 60), знизу 15px (замість 20) */
+    padding: 30px 0 10px !important; 
+    /* ЗВУЖЕНО: відстань до футера від контенту 50px (замість 80) */
+    margin-top: 30px !important; 
+}
+
+.wide-footer::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important; left: 0 !important; right: 0 !important;
+    height: 2px !important;
+    background-image: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-purple), var(--accent-cyan), transparent) !important;
+    background-size: 200% 100% !important;
+    animation: footerLineFlow 4s linear infinite !important;
+    opacity: 0.8 !important;
+}
+
+/* Зменшуємо відступ під заголовками "Сервіси" та "Про проєкт" */
+
+
+/* ========================================================= */
+/* === РОЗШИРЕНИЙ КОНТЕЙНЕР ФУТЕРА (В РІВЕНЬ З ШАПКОЮ) === */
+/* ========================================================= */
+
+.footer-container {
+    max-width: 1400px !important; /* РОЗШИРИЛИ (було 1200px) */
+    margin: 0 auto !important;
+    padding: 0 30px !important;   /* Зробили відступи точно як у шапці */
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 40px !important;
+    flex-wrap: wrap !important;
+}
+
+/* ========================================================= */
+/* === ЛОГОТИП ТА ОПИС (ЗЛІВА, ТРОХИ ОПУЩЕНІ) === */
+/* ========================================================= */
+
+.footer-brand { 
+    flex: 0 0 auto !important;
+    min-width: 300px !important;
+    max-width: 380px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    
+    /* ВИРІВНЮВАННЯ ВЛІВО, як на твоєму скріншоті */
+    align-items: flex-start !important; 
+    text-align: left !important; 
+    
+    /* ТРОХИ НИЖЧЕ: центруємо по вертикалі та додаємо невеликий відступ */
+    justify-content: center !important; 
+    margin-top: 15px !important; 
+    
+    /* Жорстко відштовхуємо колонки "Сервіси" та "Про проєкт" вправо */
+    margin-right: auto !important; 
+}
+
+/* Логотип притискаємо вліво і робимо відступ до тексту */
+.footer-brand .logo {
+    justify-content: flex-start !important;
+    width: 100% !important;
+    margin-bottom: 15px !important;
+}
+.footer-socials, .footer-links, .footer-info {
+    flex: 0 0 auto !important; 
+    width: 220px !important;
+    /* Опускаємо їх трохи нижче, щоб вирівняти по горизонталі з лівим блоком */
+    padding-top: 48px !important; 
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+}
+
+.footer-socials h3, .footer-links h3, .footer-info h3 {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    line-height: 1 !important;
+}
+
+
+
+
+.footer-links ul { list-style: none !important; padding: 0 !important; margin: 0 !important; }
+.footer-links li { margin-bottom: 12px !important; }
+
+
+
+/* Основний текст */
+.wide-footer p:not(.developer), .footer-brand p, .footer-info p {
+    font-family: 'Outfit', sans-serif !important;
+    color: #94a3b8 !important; 
+    font-size: 16px !important;
+    line-height: 1.8 !important;
+    font-weight: 400 !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    max-width: 400px !important;
+}
+
+/* Посилання (Анімація при наведенні) */
+.footer-links a, .wide-footer a {
+    font-family: 'Outfit', sans-serif !important;
+    color: #94a3b8 !important;
+    text-decoration: none !important;
+    font-size: 16px !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    display: inline-block !important;
+}
+
+.footer-links a:hover, .wide-footer a:hover {
+    color: var(--accent-cyan) !important;
+    text-shadow: 0 0 12px rgba(6, 182, 212, 0.5) !important;
+    transform: translateX(8px) !important;
+}
+
+/* Твоє ім'я (Градієнт) */
+
+
+/* Копірайт */
+/* Копірайт внизу */
+
+
+
+/* ========================================================= */
+/* === АНІМАЦІЯ ЗАГОЛОВКІВ У ФУТЕРІ ("Сервіси", "Про проєкт") === */
+/* ========================================================= */
+
+.wide-footer h3 {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 20px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    margin-bottom: 10px !important;
+
+    /* Гарний кібер-градієнт */
+    background: linear-gradient(90deg, var(--accent-cyan), #ffffff, var(--accent-purple), var(--accent-cyan)) !important;
+    background-size: 200% auto !important;
+
+    /* Робимо текст прозорим, щоб градієнт став кольором букв */
+    color: transparent !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+
+    /* Приємна анімація переливання (використовуємо твою існуючу анімацію) */
+    animation: textGradientFlow 4s linear infinite !important;
+}
+
+/* ========================================================= */
+/* === СТИЛІЗАЦІЯ БЛОКУ РОЗРОБНИКА У ФУТЕРІ === */
+/* ========================================================= */
+
+.developer-block {
+    margin-top: 15px; /* Невеликий відступ від попереднього тексту */
+    display: flex;
+    flex-direction: column;
+    gap: 2px; /* Робимо текст максимально "кучно" */
+}
+
+.developer-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    /* Використовуємо чистий бірюзовий колір для гармонії */
+    color: var(--accent-cyan); 
+    opacity: 0.9;
+    text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+.wide-footer .developer {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    letter-spacing: 0.5px !important;
+    /* ПРИБИРАЄМО МАРЖИН, щоб текст був ближче до лейбла */
+    margin-top: 0 !important; 
+    margin-bottom: 0 !important;
+    
+    /* Твій існуючий градієнт */
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    display: inline-block !important;
+}
+
+/* ========================================================= */
+/* === ЦЕНТРУВАННЯ КОПІРАЙТУ ТА АНІМАЦІЯ ЛІНІЇ === */
+/* ========================================================= */
+
+/* Жорстке центрування через Flexbox */
+.footer-bottom {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    
+    /* ЗВУЖЕНО: відступи навколо лінії копірайту */
+    padding-top: 0px !important; /* Було 30px */
+    margin-top: 0px !important; /* Було 40px */
+    
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+    flex-basis: 100% !important;
+}
+
+.footer-bottom p {
+    text-align: center !important;
+    margin: 0 !important;
+    color: #64748b !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+}
+
+@keyframes footerLineFlow {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+
+.social-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.social-links li {
+    margin-bottom: 30px; /* Трохи компактніше */
+}
+
+.social-links a {
+    display: flex !important;/* Ключове для вирівнювання */
+    align-items: center; /* Центрує іконку відносно тексту по вертикалі */
+    gap: 10px; /* Відстань між іконкою та текстом */
+    color: #94a3b8;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    line-height: 1; /* Робить висоту рядка тільки для тексту, допомагає центруванню */
+}
+
+.social-links a:hover {
+    color: var(--accent-cyan);
+    transform: translateX(5px);
+}
+
+.social-links svg {
+    width: 20px; /* Фіксований розмір іконки */
+    height: 20px;
+    display: block !important; /* Прибирає дефолтні відступи SVG */
+    flex-shrink: 0 !important;
+}
+
+/* Додай це у кінець файлу style.css або в розділ з анімаціями */
+
+/* Анімація світіння кордону для блоку результатів */
+@keyframes resultsPanelPulse {
+    0% {
+        box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        border-color: rgba(6, 182, 212, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
+        border-color: rgba(139, 92, 246, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        border-color: rgba(6, 182, 212, 0.6);
+    }
+}
+
+/* Анімація легкого мерехтіння для тексту успіху */
+@keyframes successTextShimmer {
+    0% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.2);
+    }
+    100% {
+        filter: brightness(1);
+    }
+}
+
+/* Оновлені стилі для блоку результатів порівняння */
+#compare-builds-result {
+    /* ... існуючі стилі ... */
+    border-radius: 12px;
+    padding: 20px;
+    background: rgba(13, 13, 18, 0.7);
+    transition: all 0.5s ease;
+    
+    /* Додаємо анімацію пульсації до всього блоку */
+    animation: resultsPanelPulse 3s ease-in-out infinite;
+}
+
+/* Новий клас для градієнтного тексту успіху */
+.success-gradient-text {
+    background: linear-gradient(90deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+    -webkit-background-clip: text;
+    background-clip: text; /* Додали цю стандартну властивість */
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    display: inline-block;
+    animation: successTextShimmer 2s ease-in-out infinite;
+}
+
+/* ========================================================= */
+/* === СТИЛІЗАЦІЯ ІКОНКИ ПЕРЕМОГИ У ПОРІВНЯННІ === */
+/* ========================================================= */
+
+.win-medallion {
+    /* Робимо колір іконки таким же, як і колір тексту */
+    color: currentColor; 
+    
+    /* Легке футуристичне світіння, яке пульсує */
+    filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.5));
+    transition: all 0.5s ease;
+    
+    /* Анімація світіння */
+    animation: winIconPulse 2s ease-in-out infinite;
+}
+
+/* Анімація мерехтіння для іконки перемоги */
+@keyframes winIconPulse {
+    0% { filter: drop-shadow(0 0 8px currentColor); }
+    50% { filter: drop-shadow(0 0 15px currentColor); }
+    100% { filter: drop-shadow(0 0 8px currentColor); }
+}
+
+/* ========================================================= */
+/* === АНІМАЦІЯ СЛОВА "ПЕРЕМАГАЄ:" === */
+/* ========================================================= */
+
+.winner-prefix-text {
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    
+    /* Сріблястий градієнт, що переливається */
+    background: linear-gradient(90deg, #94a3b8, #ffffff, #e2e8f0, #94a3b8) !important;
+    background-size: 200% auto !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    
+    /* Подвійна анімація: рух градієнта + світіння */
+    animation: textGradientFlow 3s linear infinite, winTextPulse 2s ease-in-out infinite alternate !important;
+}
+
+/* Пульсуюче біле світіння */
+@keyframes winTextPulse {
+    0% { filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.2)); }
+    100% { filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.6)); }
+}
