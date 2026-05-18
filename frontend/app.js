@@ -57,7 +57,7 @@ selectUse.addEventListener('change', function() {
     selectGame.selectedIndex = 0;
 });
 
-const API_BASE_URL = 'http://127.0.0.1:5001/api';
+const API_BASE_URL = 'https://cybercraft-3ldd.onrender.com';
 const getCompName = (comp) => {
     if (!comp) return 'Стандартна деталь';
     
