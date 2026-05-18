@@ -94,7 +94,10 @@ app.config['JSON_AS_ASCII'] = False
 app.json.ensure_ascii = False
 
 # ПІДКЛЮЧЕННЯ ДО БД
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:denoro2007@localhost:5432/pc_builder_db'
+# На початку файлу додай імпорт, якщо його немає: import os
+
+# Змінюємо налаштування підключення:
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://postgres:denoro2007@localhost:5432/pc_builder_db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JSON_AS_ASCII'] = False 
 app.config['UPLOAD_FOLDER'] = 'static/avatars'
