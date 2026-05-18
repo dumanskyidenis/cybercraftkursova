@@ -58,6 +58,7 @@ selectUse.addEventListener('change', function() {
 });
 
 const API_BASE_URL = 'https://cybercraft-3ldd.onrender.com/api';
+const BACKEND_URL = 'https://cybercraft-3ldd.onrender.com';
 const getCompName = (comp) => {
     if (!comp) return 'Стандартна деталь';
     
@@ -1669,7 +1670,7 @@ function renderSavedAccounts() {
         
         // === НОВЕ: Перевірка наявності аватарки ===
         const avatarContent = acc.avatar_url 
-            ? `<img src="http://127.0.0.1:5001${acc.avatar_url}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">` 
+            ? `<img src=${BACKEND_URL}${acc.avatar_url}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">` 
             : letter;
 
         return `
@@ -1901,7 +1902,7 @@ async function loadUserProfile() {
         const avatarImg = document.getElementById('profile-avatar-img');
 
         if (profile.avatar_url) {
-            avatarImg.src = `http://127.0.0.1:5001${profile.avatar_url}`;
+            avatarImg.src = `${BACKEND_URL}${profile.avatar_url}`;
             avatarImg.classList.remove('hidden');
             avatarLetter.classList.add('hidden');
         } else {
@@ -2117,7 +2118,7 @@ window.exportSavedBuild = async function(event, format, buildId) {
         if (format === 'pdf') {
             // 1. Формуємо повний шлях до файлу на нашому Flask-сервері
             // Flask автоматично роздає файли з папки static
-            const fileUrl = `http://127.0.0.1:5001${data.pdf_download_url}`;
+            const fileUrl = `${BACKEND_URL}${data.pdf_download_url}`;
             
             // 2. Завантажуємо файл у пам'ять браузера як Blob (бінарні дані)
             const pdfRes = await fetch(fileUrl);
