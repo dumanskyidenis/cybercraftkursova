@@ -63,12 +63,17 @@ class SmartConfiguratorService:
         case_db = all_cases[0] if all_cases else None
 
         result = FullBuildViewModel(
-            cpu=self._to_vm(cpu_db), motherboard=self._to_vm(mb_db), gpu=self._to_vm(gpu_db), 
-            ram=self._to_vm(ram_db), storage=self._to_vm(st_db), psu=self._to_vm(psu_db), case=self._to_vm(case_db),
+            cpu=self._to_vm(cpu_db), 
+            motherboard=self._to_vm(mb_db), 
+            gpu=self._to_vm(gpu_db), 
+            ram=self._to_vm(ram_db), 
+            storage=self._to_vm(st_db), 
+            psu=self._to_vm(psu_db), 
+            case=self._to_vm(case_db),
+            cooler=self._to_vm(cooler_db),  # <--- ТЕПЕР КУЛЕР ТУТ!
             total_price=sum([c.price for c in [self._to_vm(cpu_db), self._to_vm(gpu_db), self._to_vm(mb_db), self._to_vm(ram_db), self._to_vm(st_db), self._to_vm(psu_db), self._to_vm(case_db), self._to_vm(cooler_db)]]),
             performance_score=0
         )
-        setattr(result, 'cooler', self._to_vm(cooler_db))
         return result
 
     def get_best_build_by_budget(self, request: AutoBuildRequestViewModel) -> FullBuildViewModel:
