@@ -2161,29 +2161,13 @@ window.exportSavedBuild = async function(event, format, buildId) {
             showErrorAlert("Успіх", "Код для Reddit/Форумів скопійовано в буфер обміну!", "success");
         } 
         // 4. Генерація ПОСИЛАННЯ (Для збережених і незбережених збірок)
+    // 4. Генерація ПОСИЛАННЯ для збереженої збірки (Кабінет)
     else if (format === 'link') {
-        let shortLink = 'https://cybercraft-app.onrender.com/';
-        
-        // Якщо це просто генерація на екрані, зашиваємо ID деталей в URL
-        if (build) {
-            const params = new URLSearchParams();
-            if (build.cpu) params.append('cpu', build.cpu.id);
-            if (build.gpu) params.append('gpu', build.gpu.id);
-            if (build.motherboard) params.append('mb', build.motherboard.id);
-            if (build.ram) params.append('ram', build.ram.id);
-            if (build.storage) params.append('st', build.storage.id);
-            if (build.cooler) params.append('col', build.cooler.id);
-            if (build.psu) params.append('psu', build.psu.id);
-            if (build.case) params.append('cas', build.case.id);
-            
-            // Якщо є хоча б одна деталь, додаємо параметри до посилання
-            if (params.toString()) {
-                shortLink += '?' + params.toString();
-            }
-        }
+        // Тут нам не потрібні параметри деталей, бо збірка вже в базі під своїм ID
+        const shortLink = `https://cybercraft-app.onrender.com/?build=${buildId}`;
         
         navigator.clipboard.writeText(shortLink).then(() => {
-            showErrorAlert("Посилання створено!", `Ваше унікальне посилання:\n\n${shortLink}\n\n(Вже скопійовано в буфер обміну)`, "success");
+            showErrorAlert("Посилання створено!", `Ваше унікальне посилання скопійовано:\n\n${shortLink}`, "success");
         });
     }
     } catch (e) {
