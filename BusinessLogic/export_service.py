@@ -132,5 +132,5 @@ class ExportService:
         return markdown
 
     def create_shareable_shortlink(self, build_id: int) -> ShareableLinkViewModel:
-        short_hash = uuid.uuid4().hex[:8]
-        return ShareableLinkViewModel(short_url=f"https://pc-config.vntu.edu.ua/b/{short_hash}", expires_in_days=30)
+        share_url = f"https://cybercraft-app.onrender.com/?build={build_id}"
+        return ShareableLinkViewModel(short_url=share_url, expires_in_days=30)

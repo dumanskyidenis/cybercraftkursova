@@ -559,6 +559,30 @@ def get_build_summary():
 # ==========================================
 # МАРШРУТИ ДЛЯ ЕКСПОРТУ (EXPORT)
 # ==========================================
+
+@app.route('/api/build/<int:build_id>', methods=['GET'])
+def get_public_build_details(build_id):
+    """Отримати конфігурацію збереженої збірки за ID"""
+    from Domain.Models.saved_build import SavedBuild
+    
+    build = SavedBuild.query.get(build_id)
+    if not build:
+        return jsonify({"error": "Збірку не знайдено"}), 404
+        
+    return jsonify({
+        "name": build.build_name,
+        "cpu_id": build.cpu_id,
+        "gpu_id": build.gpu_id,
+        "motherboard_id": build.motherboard_id,
+        "ram_id": build.ram_id,
+        "storage_id": build.storage_id,
+        "psu_id": build.psu_id,
+        "cooler_id": build.cooler_id,
+        "case_id": build.case_id,
+        "mouse_id": build.mouse_id,
+        "keyboard_id": build.keyboard_id,
+        "headset_id": build.headset_id
+    }), 200
 @app.route('/api/export/pdf/<int:build_id>', methods=['GET'])
 def get_pdf_export(build_id):
     file_path = export_controller.generate_pdf_specification(build_id)
@@ -573,6 +597,7 @@ def get_markdown_export(build_id):
 def get_share_link(build_id):
     link_model = export_controller.create_shareable_shortlink(build_id)
     return jsonify(dataclasses.asdict(link_model))
+
 
 # ==========================================
 # МАРШРУТИ ДЛЯ РОЗУМНОГО КОНФІГУРАТОРА

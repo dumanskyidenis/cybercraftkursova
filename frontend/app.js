@@ -1114,9 +1114,27 @@ window.exportBuild = function(format, source) {
     } 
     
     // 4. Генерація КОРОТКОГО ПОСИЛАННЯ (Копіювання)
+    // 4. Генерація ПОСИЛАННЯ (Для збережених і незбережених збірок)
     else if (format === 'link') {
-        const hash = Math.random().toString(36).substring(2, 10);
-        const shortLink = `https://pc-config.vntu.edu.ua/b/${hash}`;
+        let shortLink = 'https://cybercraft-app.onrender.com/';
+        
+        // Якщо це просто генерація на екрані, зашиваємо ID деталей в URL
+        if (build) {
+            const params = new URLSearchParams();
+            if (build.cpu) params.append('cpu', build.cpu.id);
+            if (build.gpu) params.append('gpu', build.gpu.id);
+            if (build.motherboard) params.append('mb', build.motherboard.id);
+            if (build.ram) params.append('ram', build.ram.id);
+            if (build.storage) params.append('st', build.storage.id);
+            if (build.cooler) params.append('col', build.cooler.id);
+            if (build.psu) params.append('psu', build.psu.id);
+            if (build.case) params.append('cas', build.case.id);
+            
+            // Якщо є хоча б одна деталь, додаємо параметри до посилання
+            if (params.toString()) {
+                shortLink += '?' + params.toString();
+            }
+        }
         
         navigator.clipboard.writeText(shortLink).then(() => {
             showErrorAlert("Посилання створено!", `Ваше унікальне посилання:\n\n${shortLink}\n\n(Вже скопійовано в буфер обміну)`, "success");
@@ -2181,3 +2199,76 @@ if (avatarUpload) {
         }
     });
 }
+
+// ====================================================
+// === ЛОГІКА ІМПОРТУ ЗБІРКИ ЗА ПОСИЛАННЯМ ===
+// ====================================================
+async function checkSharedBuildInURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const buildId = urlParams.get('build');
+    
+    let buildData = null;
+
+    try {
+        if (buildId) {
+            // Варіант 1: Лінк із Кабінету (?build=15)
+            const res = await fetch(`${API_BASE_URL}/build/${buildId}`);
+            if (res.ok) buildData = await res.json();
+        } else if (urlParams.has('cpu') || urlParams.has('mb') || urlParams.has('gpu')) {
+            // Варіант 2: Лінк з Конструктора (?cpu=1&gpu=2...)
+            buildData = {
+                name: "Імпортована конфігурація",
+                cpu_id: parseInt(urlParams.get('cpu')) || null,
+                gpu_id: parseInt(urlParams.get('gpu')) || null,
+                motherboard_id: parseInt(urlParams.get('mb')) || null,
+                ram_id: parseInt(urlParams.get('ram')) || null,
+                storage_id: parseInt(urlParams.get('st')) || null,
+                cooler_id: parseInt(urlParams.get('col')) || null,
+                psu_id: parseInt(urlParams.get('psu')) || null,
+                case_id: parseInt(urlParams.get('cas')) || null
+            };
+        }
+
+        if (buildData) {
+            // Розставляємо деталі по слотах у "Ручній збірці"
+            const typeMap = {
+                'cpu': 'cpu_id', 'gpu': 'gpu_id', 'motherboard': 'motherboard_id', 
+                'ram': 'ram_id', 'storage': 'storage_id', 'cooler': 'cooler_id', 
+                'psu': 'psu_id', 'case': 'case_id'
+            };
+            
+            for (const [type, idKey] of Object.entries(typeMap)) {
+                const componentId = buildData[idKey];
+                if (componentId) {
+                    const itemsRes = await fetch(`${API_BASE_URL}${apiEndpoints[type]}`);
+                    const items = await itemsRes.json();
+                    const fullComponent = items.find(i => i.id === componentId);
+                    
+                    if (fullComponent) {
+                        manualState[type] = fullComponent;
+                        const slotCard = document.querySelector(`.slot-card[data-type="${type}"]`);
+                        if (slotCard) {
+                            const nameEl = slotCard.querySelector('.selected-name');
+                            nameEl.innerText = getCompName(fullComponent);
+                            nameEl.style.color = 'var(--accent-cyan)';
+                            slotCard.style.borderColor = 'var(--accent-cyan)';
+                        }
+                    }
+                }
+            }
+            
+            // Оновлюємо підсумок, перемикаємо сторінку і чистимо URL
+            updateManualSummary();
+            switchPage('nav-manual');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showErrorAlert("Збірку імпортовано! 🚀", `Конфігурацію "${buildData.name}" завантажено. Тепер ви можете її редагувати!`, "success");
+            
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    } catch (err) {
+        console.error("Помилка імпорту:", err);
+    }
+}
+
+// Запускаємо перевірку одразу після завантаження сторінки
+checkSharedBuildInURL();
