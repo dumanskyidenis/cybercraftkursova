@@ -8,14 +8,17 @@ from Domain.ViewModels.pc_viewmodels import (
 # 1. Імпортуємо всі потрібні репозиторії замість моделей БД
 from Repositories.hardware_repository import (
     CpuRepository, GpuRepository, MotherboardRepository, 
-    RamRepository, StorageRepository, PsuRepository, CaseRepository, CoolerRepository
+    RamRepository, StorageRepository, PsuRepository, CaseRepository
 )
 
 class SmartConfiguratorService:
+    """Сервіс для інтелектуального підбору комплектуючих (використовує Репозиторії)"""
+
+    # 2. Передаємо репозиторії через конструктор
     def __init__(self, cpu_repo: CpuRepository, gpu_repo: GpuRepository, 
                  mb_repo: MotherboardRepository, ram_repo: RamRepository, 
                  storage_repo: StorageRepository, psu_repo: PsuRepository, 
-                 case_repo: CaseRepository, cooler_repo: CoolerRepository):
+                 case_repo: CaseRepository):
         self.cpu_repo = cpu_repo
         self.gpu_repo = gpu_repo
         self.mb_repo = mb_repo
@@ -23,75 +26,55 @@ class SmartConfiguratorService:
         self.storage_repo = storage_repo
         self.psu_repo = psu_repo
         self.case_repo = case_repo
-        self.cooler_repo = cooler_repo
 
-    def _get_best_compatible(self, repo, max_price: float, condition=None):
-        """Знаходить найкращу деталь у бюджеті, яка відповідає умовам сумісності"""
-        items = repo.get_all()
-        valid_items = [i for i in items if i.price <= max_price]
+    def _get_best_component(self, repo, max_price: float):
+        """Допоміжний метод: тепер приймає об'єкт репозиторію, а не клас моделі"""
+        # 3. Викликаємо наш новий універсальний метод з BaseRepository
+        item = repo.get_best_under_price(max_price)
         
-        if condition:
-            valid_items = [i for i in valid_items if condition(i)]
+        if not item:
+            return ComponentShortViewModel(id=0, name="Немає в наявності", price=0)
             
-        if not valid_items:
-            valid_items = [i for i in items if (condition(i) if condition else True)]
-            if not valid_items: return None
-            valid_items.sort(key=lambda x: x.price)
-            return valid_items[0]
-            
-        valid_items.sort(key=lambda x: x.price, reverse=True)
-        return valid_items[0]
-
-    def _to_vm(self, db_item):
-        if not db_item:
-            return ComponentShortViewModel(id=0, name="Не знайдено", price=0)
-        return ComponentShortViewModel(id=db_item.id, name=f"{getattr(db_item, 'brand', '')} {getattr(db_item, 'model', '')}", price=db_item.price)
-
-    def _build_compatible_system(self, budgets: dict) -> FullBuildViewModel:
-        """Створює повністю сумісну систему на основі переданих бюджетів"""
-        cpu_db = self._get_best_compatible(self.cpu_repo, budgets['cpu'])
-        
-        mb_cond = lambda m: getattr(m, 'socket', '') == getattr(cpu_db, 'socket', '') if cpu_db else True
-        mb_db = self._get_best_compatible(self.mb_repo, budgets['mb'], mb_cond)
-        
-        ram_cond = lambda r: getattr(r, 'r_type', getattr(r, 'type', '')) == getattr(mb_db, 'memory_type', '') if mb_db else True
-        ram_db = self._get_best_compatible(self.ram_repo, budgets['ram'], ram_cond)
-        
-        cooler_cond = lambda c: (getattr(cpu_db, 'socket', '') in getattr(c, 'socket', '')) if cpu_db else True
-        cooler_db = self._get_best_compatible(self.cooler_repo, budgets['cooler'], cooler_cond)
-        
-        gpu_db = self._get_best_compatible(self.gpu_repo, budgets['gpu'])
-        
-        total_tdp = 50 + (getattr(cpu_db, 'tdp', 65) if cpu_db else 0) + (getattr(gpu_db, 'tdp', 200) if gpu_db else 0)
-        req_watts = int(total_tdp * 1.2)
-        psu_cond = lambda p: getattr(p, 'wattage', getattr(p, 'watts', 0)) >= req_watts
-        psu_db = self._get_best_compatible(self.psu_repo, budgets['psu'], psu_cond)
-        
-        st_db = self._get_best_compatible(self.storage_repo, budgets['storage'])
-        case_db = self._get_best_compatible(self.case_repo, budgets['case'])
-
-        cpu_vm, gpu_vm, mb_vm = self._to_vm(cpu_db), self._to_vm(gpu_db), self._to_vm(mb_db)
-        ram_vm, cooler_vm, psu_vm = self._to_vm(ram_db), self._to_vm(cooler_db), self._to_vm(psu_db)
-        st_vm, case_vm = self._to_vm(st_db), self._to_vm(case_db)
-
-        real_total = sum([c.price for c in [cpu_vm, gpu_vm, mb_vm, ram_vm, cooler_vm, psu_vm, st_vm, case_vm]])
-
-        result = FullBuildViewModel(
-            cpu=cpu_vm, motherboard=mb_vm, gpu=gpu_vm, 
-            ram=ram_vm, storage=st_vm, psu=psu_vm, case=case_vm,
-            total_price=real_total, performance_score=int(real_total * 0.15)
-        )
-        setattr(result, 'cooler', cooler_vm)
-        return result
+        return ComponentShortViewModel(id=item.id, name=f"{item.brand} {item.model}", price=item.price)
 
     def get_best_build_by_budget(self, request: AutoBuildRequestViewModel) -> FullBuildViewModel:
-        b = request.target_budget
-        budgets = {
-            'cpu': b * 0.22, 'cooler': b * 0.05, 'gpu': b * 0.38, 
-            'mb': b * 0.10, 'ram': b * 0.08, 'storage': b * 0.08, 
-            'psu': b * 0.07, 'case': b * 0.02
-        }
-        return self._build_compatible_system(budgets)
+        budget = request.target_budget
+
+        cpu_budget = budget * 0.25
+        gpu_budget = budget * 0.40
+        mb_budget = budget * 0.10
+        ram_budget = budget * 0.10
+        storage_budget = budget * 0.08
+        psu_budget = budget * 0.07
+
+        # 4. Передаємо репозиторії в допоміжний метод
+        cpu_model = self._get_best_component(self.cpu_repo, cpu_budget)
+        gpu_model = self._get_best_component(self.gpu_repo, gpu_budget)
+        mb_model = self._get_best_component(self.mb_repo, mb_budget)
+        ram_model = self._get_best_component(self.ram_repo, ram_budget)
+        st_model = self._get_best_component(self.storage_repo, storage_budget)
+        psu_model = self._get_best_component(self.psu_repo, psu_budget)
+        
+        # Беремо перший корпус через репозиторій
+        all_cases = self.case_repo.get_all()
+        case_db = all_cases[0] if all_cases else None
+        case_model = ComponentShortViewModel(
+            id=case_db.id if case_db else 0, 
+            name=f"{case_db.brand} {case_db.model}" if case_db else "Немає в БД", 
+            price=case_db.price if case_db else 0
+        )
+
+        real_total_price = sum([
+            cpu_model.price, gpu_model.price, mb_model.price, 
+            ram_model.price, st_model.price, psu_model.price, case_model.price
+        ])
+
+        return FullBuildViewModel(
+            cpu=cpu_model, motherboard=mb_model, gpu=gpu_model, 
+            ram=ram_model, storage=st_model, psu=psu_model, case=case_model,
+            total_price=real_total_price,
+            performance_score=int(real_total_price * 0.15)
+        )
 
     def get_build_for_game(self, request: PurposeBuildRequestViewModel) -> FullBuildViewModel:
         # 1. Базові ціни для збірки рівня 1080p, Medium, Стандартна гра
@@ -206,27 +189,43 @@ class SmartConfiguratorService:
             base_psu = 1200
 
         # 6. ФІНАЛЬНИЙ РОЗРАХУНОК ЦІЛЬОВОГО БЮДЖЕТУ ДЛЯ КОЖНОЇ ДЕТАЛІ
-        # 6. ФІНАЛЬНИЙ РОЗРАХУНОК ЦІЛЬОВОГО БЮДЖЕТУ ДЛЯ КОЖНОЇ ДЕТАЛІ
-        # 6. ФІНАЛЬНИЙ РОЗРАХУНОК ЦІЛЬОВОГО БЮДЖЕТУ ДЛЯ КОЖНОЇ ДЕТАЛІ
-        budgets = {
-            'cpu': base_cpu * res_mult_cpu * perf_mult * game_mult,
-            'cooler': 1500 * perf_mult,  # Базовий кулер
-            'gpu': base_gpu * res_mult_gpu * perf_mult * game_mult,
-            'mb': base_mb * perf_mult,
-            'ram': base_ram * perf_mult,
-            'storage': base_storage * perf_mult,
-            'psu': base_psu * perf_mult * res_mult_gpu,
-            'case': 2000 * perf_mult
-        }
+        target_cpu_price = base_cpu * res_mult_cpu * perf_mult * game_mult
+        target_gpu_price = base_gpu * res_mult_gpu * perf_mult * game_mult
+        target_mb_price = base_mb * perf_mult
+        target_ram_price = base_ram * perf_mult
+        target_storage_price = base_storage * perf_mult
+        target_psu_price = base_psu * perf_mult * res_mult_gpu
 
-        # 7. ЗБИРАЄМО СУМІСНУ СИСТЕМУ
-        result = self._build_compatible_system(budgets)
+        # 7. ЗВЕРНЕННЯ ДО РЕПОЗИТОРІЇВ ЗА ДЕТАЛЯМИ
+        cpu_model = self._get_best_component(self.cpu_repo, target_cpu_price)
+        gpu_model = self._get_best_component(self.gpu_repo, target_gpu_price)
+        mb_model = self._get_best_component(self.mb_repo, target_mb_price)
+        ram_model = self._get_best_component(self.ram_repo, target_ram_price)
+        st_model = self._get_best_component(self.storage_repo, target_storage_price)
+        psu_model = self._get_best_component(self.psu_repo, target_psu_price)
         
-        # Перераховуємо бали для робочих станцій
-        if "work" in use:
-            result.performance_score = int((result.cpu.price * 2 + result.gpu.price) * 0.2)
+        # Беремо перший корпус через репозиторій
+        all_cases = self.case_repo.get_all()
+        case_db = all_cases[0] if all_cases else None
+        case_model = ComponentShortViewModel(
+            id=case_db.id if case_db else 0, 
+            name=f"{case_db.brand} {case_db.model}" if case_db else "Standard Case", 
+            price=case_db.price if case_db else 0
+        )
 
-        return result
+        real_total = sum([c.price for c in [cpu_model, gpu_model, mb_model, ram_model, st_model, psu_model, case_model]])
+
+        # Визначаємо бали продуктивності (для ігор більше важить GPU, для роботи CPU)
+        score = int(real_total * 0.15)
+        if "work" in use:
+            score = int((cpu_model.price * 2 + gpu_model.price) * 0.2)
+
+        return FullBuildViewModel(
+            cpu=cpu_model, motherboard=mb_model, gpu=gpu_model, 
+            ram=ram_model, storage=st_model, psu=psu_model, case=case_model,
+            total_price=real_total,
+            performance_score=score
+        )
 
     def upgrade_suggestion(self, current_budget: float, cpu_id: int, gpu_id: int) -> str:
         if current_budget >= 15000:

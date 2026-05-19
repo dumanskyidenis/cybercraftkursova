@@ -217,7 +217,6 @@ async function fetchSmartBuild() {
         html += createComponentCard('Накопичувач', data.storage, 5);
         html += createComponentCard('Блок живлення', data.psu, 6);
         html += createComponentCard('Корпус', data.case, 7);
-        html += createComponentCard('Охолодження', data.cooler, 1,5);
 
         // Периферія (якщо увімкнена)
         // Периферія (якщо увімкнена)
@@ -1130,11 +1129,6 @@ window.exportBuild = function(format, source) {
             if (build.cooler) params.append('col', build.cooler.id);
             if (build.psu) params.append('psu', build.psu.id);
             if (build.case) params.append('cas', build.case.id);
-            // --- ДОДАНА ПЕРИФЕРІЯ ---
-            if (build.mouse) params.append('ms', build.mouse.id);
-            if (build.keyboard) params.append('kb', build.keyboard.id);
-            if (build.headset) params.append('hs', build.headset.id);
-            // ------------------------
             
             // Якщо є хоча б одна деталь, додаємо параметри до посилання
             if (params.toString()) {
@@ -2166,10 +2160,32 @@ window.exportSavedBuild = async function(event, format, buildId) {
             navigator.clipboard.writeText(data.markdown_text);
             showErrorAlert("Успіх", "Код для Reddit/Форумів скопійовано в буфер обміну!", "success");
         } 
-        else if (format === 'link') {
-            navigator.clipboard.writeText(data.short_url);
-            showErrorAlert("Посилання створено!", `Ваше унікальне посилання скопійовано:\n\n${data.short_url}`, "success");
+        // 4. Генерація ПОСИЛАННЯ (Для збережених і незбережених збірок)
+    else if (format === 'link') {
+        let shortLink = 'https://cybercraft-app.onrender.com/';
+        
+        // Якщо це просто генерація на екрані, зашиваємо ID деталей в URL
+        if (build) {
+            const params = new URLSearchParams();
+            if (build.cpu) params.append('cpu', build.cpu.id);
+            if (build.gpu) params.append('gpu', build.gpu.id);
+            if (build.motherboard) params.append('mb', build.motherboard.id);
+            if (build.ram) params.append('ram', build.ram.id);
+            if (build.storage) params.append('st', build.storage.id);
+            if (build.cooler) params.append('col', build.cooler.id);
+            if (build.psu) params.append('psu', build.psu.id);
+            if (build.case) params.append('cas', build.case.id);
+            
+            // Якщо є хоча б одна деталь, додаємо параметри до посилання
+            if (params.toString()) {
+                shortLink += '?' + params.toString();
+            }
         }
+        
+        navigator.clipboard.writeText(shortLink).then(() => {
+            showErrorAlert("Посилання створено!", `Ваше унікальне посилання:\n\n${shortLink}\n\n(Вже скопійовано в буфер обміну)`, "success");
+        });
+    }
     } catch (e) {
         showErrorAlert("Помилка експорту", e.message || "Не вдалося зв'язатися з сервером.");
     }
