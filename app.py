@@ -194,7 +194,8 @@ smart_service = SmartConfiguratorService(
     ram_repo=ram_repo,
     storage_repo=storage_repo,
     psu_repo=psu_repo,
-    case_repo=case_repo
+    case_repo=case_repo,
+    cooler_repo=cooler_repo
 )
 smart_controller = SmartConfiguratorController(smart_service=smart_service)
 

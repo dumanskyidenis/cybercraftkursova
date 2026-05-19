@@ -211,6 +211,7 @@ async function fetchSmartBuild() {
         let finalPrice = data.total_price;
 
         html += createComponentCard('Процесор', data.cpu, 1);
+        html += createComponentCard('Охолодження', data.cooler, 1.5);
         html += createComponentCard('Відеокарта', data.gpu, 2);
         html += createComponentCard('Материнська плата', data.motherboard, 3);
         html += createComponentCard('Оперативна пам\'ять', data.ram, 4);
@@ -1129,6 +1130,9 @@ window.exportBuild = function(format, source) {
             if (build.cooler) params.append('col', build.cooler.id);
             if (build.psu) params.append('psu', build.psu.id);
             if (build.case) params.append('cas', build.case.id);
+            if (build.mouse) params.append('mouse', build.mouse.id);
+            if (build.keyboard) params.append('keyboard', build.keyboard.id);
+            if (build.headset) params.append('headset', build.headset.id);
             
             // Якщо є хоча б одна деталь, додаємо параметри до посилання
             if (params.toString()) {
@@ -2231,7 +2235,10 @@ async function checkSharedBuildInURL() {
                 storage_id: parseInt(urlParams.get('st')) || null,
                 cooler_id: parseInt(urlParams.get('col')) || null,
                 psu_id: parseInt(urlParams.get('psu')) || null,
-                case_id: parseInt(urlParams.get('cas')) || null
+                case_id: parseInt(urlParams.get('cas')) || null,
+                mouse_id: parseInt(urlParams.get('mouse')) || null,
+                keyboard_id: parseInt(urlParams.get('keyboard')) || null,
+                headset_id: parseInt(urlParams.get('headset')) || null
             };
         }
 
@@ -2240,7 +2247,8 @@ async function checkSharedBuildInURL() {
             const typeMap = {
                 'cpu': 'cpu_id', 'gpu': 'gpu_id', 'motherboard': 'motherboard_id', 
                 'ram': 'ram_id', 'storage': 'storage_id', 'cooler': 'cooler_id', 
-                'psu': 'psu_id', 'case': 'case_id'
+                'psu': 'psu_id', 'case': 'case_id',
+                'mouse': 'mouse_id', 'keyboard': 'keyboard_id', 'headset': 'headset_id'
             };
             
             for (const [type, idKey] of Object.entries(typeMap)) {

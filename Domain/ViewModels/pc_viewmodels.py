@@ -47,6 +47,7 @@ class FullBuildViewModel:
     storage: ComponentShortViewModel
     psu: ComponentShortViewModel
     case: ComponentShortViewModel
+    cooler: ComponentShortViewModel 
     total_price: float
     performance_score: int 
 
