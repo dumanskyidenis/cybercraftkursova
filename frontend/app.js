@@ -217,6 +217,7 @@ async function fetchSmartBuild() {
         html += createComponentCard('Накопичувач', data.storage, 5);
         html += createComponentCard('Блок живлення', data.psu, 6);
         html += createComponentCard('Корпус', data.case, 7);
+        html += createComponentCard('Охолодження', data.cooler, 1,5);
 
         // Периферія (якщо увімкнена)
         // Периферія (якщо увімкнена)
@@ -1129,6 +1130,11 @@ window.exportBuild = function(format, source) {
             if (build.cooler) params.append('col', build.cooler.id);
             if (build.psu) params.append('psu', build.psu.id);
             if (build.case) params.append('cas', build.case.id);
+            // --- ДОДАНА ПЕРИФЕРІЯ ---
+            if (build.mouse) params.append('ms', build.mouse.id);
+            if (build.keyboard) params.append('kb', build.keyboard.id);
+            if (build.headset) params.append('hs', build.headset.id);
+            // ------------------------
             
             // Якщо є хоча б одна деталь, додаємо параметри до посилання
             if (params.toString()) {
